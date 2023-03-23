@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <script type="text/javascript" src="./index/index.js"></script>
+    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+  </head>
+
+  <body>
+    <script>
+      AFRAME.registerComponent("rotate", {
+        schema: {
+          // speed: { type: "number", default: "1" },
+        },
+
+        init: function () {
+          this.rotation_vec_3 = new THREE.Vector3();
+          this.timeSinceRotated = 0;
+          //var data = this.data;
+          //var el = this.el;
+          //el.setObject2D("mesh", this.mesh);
+        },
+
+        tick: function (time, timeDelta) {
+          if (this.timeSinceRotated < 1000) {
+            this.timeSinceRotated += timeDelta;
+            return;
+          }
+          this.timeSinceRotated = 0;
+          let current_rotation = this.el.getAttribute("rotation");
+
+          current_rotation.z += THREE.Math.degToRad(30);
+          if (current_rotation.z >= 360) {
+            console.log(current_rotation);
+            current_rotation.z = 0;
+          }
+          this.el.object3D.rotation.set(
+            THREE.Math.degToRad(0),
+            THREE.Math.degToRad(0),
+            current_rotation.z
+          );
+        },
+      });
+    </script>
+    <a-scene class="my_scene" background="color: #FAFAFA">
+      <a-camera class="my_camera" position="0 1.6 3"></a-camera>
+      <a-box
+        class="my_box"
+        position="-1 0.5 -3"
+        rotation="0 0 0"
+        color="#4CC3D9"
+        shadow
+      >
+      </a-box>
+      <a-sphere
+        class="my_sphere"
+        position="0 1.25 -5"
+        radius=" 1.25 "
+        color="#EF2D5E"
+        shadow
+      >
+      </a-sphere>
+      <a-cylinder
+        class="my_cylinder"
+        position="1 0.75 -3"
+        radius=" 0.5"
+        height="1.5"
+        color="#FFC65D"
+        shadow
+      >
+      </a-cylinder>
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="4"
+        height="4"
+        color="#7BC8A4"
+        shadow
+      >
+      </a-plane>
+    </a-scene>
+  </body>
+</html>
